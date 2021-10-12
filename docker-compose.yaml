@@ -1,0 +1,40 @@
+version: "3"
+services:
+  mongodb:
+    image: mongo
+    volumes:
+      - mongo-data-agisit:/data/db
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_PORT=27017
+    depends_on:
+      - mongodb
+
+  backend:
+    image: aaugusto11/server
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+
+  webapp:
+    image: aaugusto11/web-app
+    depends_on:
+      - backend
+
+  proxy:
+    image: nginx
+    volumes:
+    - '${PWD}/nginx.conf:/etc/nginx/nginx.conf'
+    ports:
+    - "8080:80"
+    depends_on:
+      - webapp
+
+volumes:
+  mongo-data-agisit:
