@@ -8,7 +8,7 @@ function App() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/users").then((response) => {
+    axios.get("http://backend:5000/users").then((response) => {
       setUsers(response.data);
     }).catch((err) => console.error(err));
   }, []);
@@ -19,7 +19,7 @@ function App() {
       age: age
     }
     event.preventDefault();
-    axios.post("http://localhost:5000/user", newUser)
+    axios.post("http://backend:5000/user", newUser)
       .then(() => {
         setUsers(state => [...state, newUser])
       });
